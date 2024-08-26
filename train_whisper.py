@@ -43,7 +43,7 @@ processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file
 processed_dataset.set_format(type="torch", columns=["input_features", "labels"])
 processed_dataset = processed_dataset.filter(lambda x: x["labels"].shape[0] < 200)
 
-for i in [1e-5, 5e-5, 1e-6, 5e-5]:
+for i in [1e-7, 5e-5, 1e-6]:
     training_args = Seq2SeqTrainingArguments(
         output_dir="./models/whisper-large-v3-finetuned-{}".format(i),
         per_device_train_batch_size=1,
