@@ -26,6 +26,7 @@ pipe = pipeline(
 
 dataset = load_dataset("distil-whisper/librispeech_long", "clean", split="validation")
 sample = dataset[0]["audio"]
+print(sample)
 
 result = pipe(sample)
 print(result["text"])
