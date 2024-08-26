@@ -7,6 +7,7 @@ from transformers import (
     Seq2SeqTrainer,
     Seq2SeqTrainingArguments
 )
+from pydub import AudioSegment
 from datasets import Audio, load_from_disk
 import os
 
@@ -38,6 +39,8 @@ dataset = dataset.cast_column(
     ),
 )
 processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file", "transcription", "audio"])
+for ds in processed_dataset:
+    print(ds["input_features"].shape, ds["labels"].shape)
 
 training_args = Seq2SeqTrainingArguments(
     output_dir="./whisper-large-finetuned",
