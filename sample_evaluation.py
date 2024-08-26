@@ -28,7 +28,9 @@ pipe = pipeline(
 dataset = load_from_disk("/data/gpt4o-cleansed-nhi-wav")
 
 data_list = []
-for d in tqdm(dataset):
+for index, d in enumerate(tqdm(dataset)):
+    if index > 100:
+        break
     file_path = d['audio_file'].replace(".webm", ".wav")
     data, sampling_rate = librosa.load("/data/nhi-dictation-dataset-wav/audio/{}".format(file_path))
     audio_data = {
@@ -39,5 +41,6 @@ for d in tqdm(dataset):
     result = pipe(audio_data)
     d['tuned_result'] = result["text"]
     data_list.append(d)
+
 
 Dataset.from_list(data_list).save_to_disk("dataset/result/whisper-tuned-nhi-dataset")
