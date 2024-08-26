@@ -1,6 +1,6 @@
 import pandas as pd
 import datasets
-import soundfile as sf
+import soundfile as sfpip
 from transformers import (
     WhisperProcessor,
     WhisperForConditionalGeneration,
@@ -22,7 +22,8 @@ def preprocess_function(examples):
         return_tensors="pt"
     )
     with processor.as_target_processor():
-        labels = processor(examples["transcription"], return_tensors="pt").input_ids
+        labels = processor.tokenizer(examples["transcription"], return_tensors="pt").input_ids
+
     return {"input_features": inputs.input_features.squeeze(), "labels": labels.squeeze()}
 
 
