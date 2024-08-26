@@ -38,7 +38,13 @@ dataset = dataset.cast_column(
         sampling_rate=16000,
     ),
 )
-processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file", "transcription", "audio"])
+
+# remove those label longer than 2000
+processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file", "transcription", "audio"]).map(
+    lambda x: x if x["labels"].shape[0] < 200 else None
+)
+
+
 processed_dataset.set_format(type="torch", columns=["input_features", "labels"])
 for ds in processed_dataset:
     print(ds["input_features"].shape, ds["labels"].shape)
