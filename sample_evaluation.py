@@ -1,7 +1,15 @@
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 from datasets import load_dataset
+import librosa
 
+# 读取wav文件
+data, sampling_rate = librosa.load("/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav", 16000)
+audio_data = {
+    'path': '/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav',
+    'array': data,
+    'sampling_rate': sampling_rate
+}
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
@@ -24,9 +32,5 @@ pipe = pipeline(
     device=device,
 )
 
-dataset = load_dataset("distil-whisper/librispeech_long", "clean", split="validation")
-sample = dataset[0]["audio"]
-print(sample)
-
-result = pipe(sample)
+result = pipe(audio_data)
 print(result["text"])
