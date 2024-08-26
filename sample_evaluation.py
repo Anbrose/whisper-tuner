@@ -13,7 +13,7 @@ model = AutoModelForSpeechSeq2Seq.from_pretrained(
 )
 model.to(device)
 
-processor = AutoProcessor.from_pretrained(model_id)
+processor = AutoProcessor.from_pretrained("openai/whisper-large-v3")
 
 pipe = pipeline(
     "automatic-speech-recognition",
