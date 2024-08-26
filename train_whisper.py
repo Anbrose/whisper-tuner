@@ -11,8 +11,6 @@ from pydub import AudioSegment
 from datasets import Audio, load_from_disk
 import os
 
-os.environ['CUDA_LAUNCH_BLOCKING']="1"
-os.environ['TORCH_USE_CUDA_DSA'] = "1"
 
 processor = WhisperProcessor.from_pretrained("openai/whisper-large-v3")
 model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large-v3")
