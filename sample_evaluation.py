@@ -4,7 +4,7 @@ from datasets import load_dataset
 import librosa
 
 # 读取wav文件
-data, sampling_rate = librosa.load("/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav", 16000)
+data, sampling_rate = librosa.load("/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav")
 audio_data = {
     'path': '/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav',
     'array': data,
