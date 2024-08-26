@@ -8,9 +8,11 @@ from transformers import (
     Seq2SeqTrainingArguments
 )
 from datasets import Audio, load_from_disk
+import os
 
+os.environ['CUDA_LAUNCH_BLOCKING']="1"
+os.environ['TORCH_USE_CUDA_DSA'] = "1"
 
-# 加载模型和处理器
 processor = WhisperProcessor.from_pretrained("openai/whisper-medium")
 model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-medium")
 
