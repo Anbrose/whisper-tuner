@@ -1,15 +1,8 @@
 import torch
 from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk, Dataset
 import librosa
-
-# 读取wav文件
-data, sampling_rate = librosa.load("/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav")
-audio_data = {
-    'path': '/data/nhi-dictation-dataset-wav/audio/cb077b4c-328c-11ef-9191-0283cfceb214.wav',
-    'array': data,
-    'sampling_rate': sampling_rate
-}
+from tqdm import tqdm
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
@@ -32,5 +25,19 @@ pipe = pipeline(
     device=device,
 )
 
-result = pipe(audio_data)
-print(result["text"])
+dataset = load_from_disk("/data/gpt4o-cleansed-nhi-wav")
+
+data_list = []
+for d in tqdm(dataset):
+    file_path = d['audio_file']
+    data, sampling_rate = librosa.load("/data/nhi-dictation-dataset-wav/audio/{}".format(file_path))
+    audio_data = {
+        'path': '/data/nhi-dictation-dataset-wav/audio/{}'.format(file_path),
+        'array': data,
+        'sampling_rate': sampling_rate
+    }
+    result = pipe(audio_data)
+    d['tuned_result'] = result["text"]
+    data_list.append(d)
+
+Dataset.from_list(data_list).save_to_disk("dataset/result/whisper-tuned-nhi-dataset")
