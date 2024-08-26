@@ -9,8 +9,6 @@ from transformers import (
 )
 from datasets import Audio, load_from_disk
 
-df = pd.read_csv('your_dataset.csv')
-
 
 # 加载模型和处理器
 processor = WhisperProcessor.from_pretrained("openai/whisper-large")
@@ -28,7 +26,7 @@ def preprocess_function(examples):
     return {"input_features": inputs.input_features.squeeze(), "labels": labels.squeeze()}
 
 
-dataset = load_from_disk(data_path)
+dataset = load_from_disk("/data/gpt4o-cleansed-nhi-wav")
 
 dataset = dataset.cast_column(
     "audio",
@@ -40,10 +38,10 @@ processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file
 
 training_args = Seq2SeqTrainingArguments(
     output_dir="./whisper-large-finetuned",
-    per_device_train_batch_size=16,
+    per_device_train_batch_size=4,
     gradient_accumulation_steps=2,
     learning_rate=1e-5,
-    num_train_epochs=3,
+    num_train_epochs=1,
     predict_with_generate=True,
     logging_dir="./logs",
     logging_steps=10,
