@@ -46,7 +46,7 @@ processed_dataset.set_format(type="torch", columns=["input_features", "labels"])
 processed_dataset = processed_dataset.filter(lambda x: x["labels"].shape[0] < 200)
 
 training_args = Seq2SeqTrainingArguments(
-    output_dir="./whisper-large-finetuned",
+    output_dir="./models/whisper-large-v3-finetuned",
     per_device_train_batch_size=1,
     gradient_accumulation_steps=2,
     learning_rate=1e-5,
@@ -56,7 +56,7 @@ training_args = Seq2SeqTrainingArguments(
     logging_steps=10,
     save_steps=500,
     eval_steps=500,
-    warmup_steps=500,
+    warmup_steps=200,
     save_total_limit=3,
     fp16=True,
 )
