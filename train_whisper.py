@@ -11,8 +11,8 @@ from datasets import Audio, load_from_disk
 
 
 # 加载模型和处理器
-processor = WhisperProcessor.from_pretrained("openai/whisper-large")
-model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large")
+processor = WhisperProcessor.from_pretrained("openai/whisper-medium")
+model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-medium")
 
 
 def preprocess_function(examples):
