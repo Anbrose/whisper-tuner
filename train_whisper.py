@@ -39,6 +39,7 @@ dataset = dataset.cast_column(
     ),
 )
 processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file", "transcription", "audio"])
+processed_dataset.set_format(type="torch", columns=["input_features", "labels"])
 for ds in processed_dataset:
     print(ds["input_features"].shape, ds["labels"].shape)
 
