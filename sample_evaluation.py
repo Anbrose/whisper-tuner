@@ -40,6 +40,7 @@ for index, d in enumerate(tqdm(dataset)):
     }
     result = pipe(audio_data)
     d['tuned_result'] = result["text"]
+    print(d['tuned_result'])
     data_list.append(d)
 
 
