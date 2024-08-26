@@ -14,8 +14,8 @@ import os
 os.environ['CUDA_LAUNCH_BLOCKING']="1"
 os.environ['TORCH_USE_CUDA_DSA'] = "1"
 
-processor = WhisperProcessor.from_pretrained("openai/whisper-medium")
-model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-medium")
+processor = WhisperProcessor.from_pretrained("openai/whisper-large-v3")
+model = WhisperForConditionalGeneration.from_pretrained("openai/whisper-large-v3")
 
 
 def preprocess_function(examples):
