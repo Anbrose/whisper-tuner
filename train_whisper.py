@@ -21,8 +21,8 @@ def preprocess_function(examples):
         sampling_rate=examples["audio"]["sampling_rate"],
         return_tensors="pt"
     )
-    with processor.as_target_processor():
-        labels = processor.tokenizer(examples["transcription"], return_tensors="pt").input_ids
+
+    labels = processor.tokenizer(examples["transcription"], return_tensors="pt").input_ids
 
     return {"input_features": inputs.input_features.squeeze(), "labels": labels.squeeze()}
 
