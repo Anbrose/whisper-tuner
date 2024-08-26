@@ -39,7 +39,7 @@ processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file
 
 training_args = Seq2SeqTrainingArguments(
     output_dir="./whisper-large-finetuned",
-    per_device_train_batch_size=4,
+    per_device_train_batch_size=1,
     gradient_accumulation_steps=2,
     learning_rate=1e-5,
     num_train_epochs=1,
