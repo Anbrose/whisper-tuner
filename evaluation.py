@@ -21,7 +21,7 @@ torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
 processor = WhisperProcessor.from_pretrained("openai/whisper-large-v3")
 model = AutoModelForSpeechSeq2Seq.from_pretrained(
-    "/whisper-tuner/models/whisper-large-finetuned/checkpoint-111", torch_dtype=torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
+    "/whisper-tuner/models/whisper-large-finetuned/checkpoint-111"
 )
 model.to(device)
 pipe = pipeline(
