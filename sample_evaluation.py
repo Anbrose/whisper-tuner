@@ -31,7 +31,7 @@ dataset = load_from_disk("/data/gpt4o-cleansed-nhi-wav-30s-test")
 
 data_list = []
 for index, d in enumerate(tqdm(dataset)):
-    file_path = d['audio_file'].replace(".webm", ".wav")
+    file_path = d['audio'].replace(".webm", ".wav")
     data, sampling_rate = librosa.load(file_path)
     audio_data = {
         'path': file_path,
