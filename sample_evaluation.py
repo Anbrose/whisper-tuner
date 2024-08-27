@@ -42,6 +42,8 @@ for index, d in enumerate(tqdm(dataset)):
     d['tuned_result'] = result["text"]
     metric.add_batch(predictions=[result["text"]], references=[d['transcription']])
     print("Current", metric.compute())
+    print("*********Audio file****")
+    print("Audio file: ", file_path)
     print("*********Result********")
     print("Tuned: ", result["text"])
     print("*********Original********")
