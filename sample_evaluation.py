@@ -42,8 +42,13 @@ for index, d in enumerate(tqdm(dataset)):
     d['tuned_result'] = result["text"]
     metric.add_batch(predictions=[result["text"]], references=[d['transcription']])
     print("Current", metric.compute())
+    print("*********Result********")
+    print("Tuned: ", result["text"])
+    print("*********Original********")
+    print("Original: ", d['transcription'])
 
     data_list.append(d)
+    break
 
 
 Dataset.from_list(data_list).save_to_disk("dataset/result/whisper-tuned-nhi-dataset")
