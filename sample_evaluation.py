@@ -50,7 +50,6 @@ for index, d in enumerate(tqdm(dataset)):
     print("Original: ", d['transcription'])
 
     data_list.append(d)
-    break
 
 
 Dataset.from_list(data_list).save_to_disk("dataset/result/whisper-tuned-nhi-dataset")
