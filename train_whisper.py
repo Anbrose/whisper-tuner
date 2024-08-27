@@ -28,7 +28,7 @@ def preprocess_function(examples):
     return {"input_features": inputs.input_features.squeeze(), "labels": labels.squeeze()}
 
 
-dataset = load_from_disk("/data/gpt4o-cleansed-nhi-wav")
+dataset = load_from_disk("/data/gpt4o-cleansed-nhi-wav-30s")
 
 dataset = dataset.cast_column(
     "audio",
@@ -41,55 +41,30 @@ dataset = dataset.cast_column(
 processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file", "transcription", "audio"])
 
 processed_dataset.set_format(type="torch", columns=["input_features", "labels"])
-processed_dataset = processed_dataset.filter(lambda x: x["labels"].shape[0] < 200)
 
-for i in [1e-7, 5e-5, 1e-6]:
-    training_args = Seq2SeqTrainingArguments(
-        output_dir="./models/whisper-large-v3-finetuned-{}".format(i),
-        per_device_train_batch_size=1,
-        gradient_accumulation_steps=2,
-        learning_rate=i,
-        num_train_epochs=2,
-        predict_with_generate=True,
-        logging_dir="./logs",
-        logging_steps=10,
-        save_steps=500,
-        eval_steps=500,
-        warmup_steps=0,
-        save_total_limit=3,
-        fp16=True,
-    )
 
-    trainer = Seq2SeqTrainer(
-        model=model,
-        args=training_args,
-        train_dataset=processed_dataset,
-        tokenizer=processor.feature_extractor,
-    )
+training_args = Seq2SeqTrainingArguments(
+    output_dir="./models/whisper-large-v3-finetuned-30s",
+    per_device_train_batch_size=1,
+    per_gpu_eval_batch_size=1,
+    gradient_accumulation_steps=2,
+    learning_rate=5e-5,
+    num_train_epochs=1,
+    predict_with_generate=True,
+    logging_dir="./logs",
+    logging_steps=10,
+    save_steps=500,
+    eval_steps=500,
+    warmup_steps=200,
+    save_total_limit=3,
+    fp16=True,
+)
 
-    trainer.train()
+trainer = Seq2SeqTrainer(
+    model=model,
+    args=training_args,
+    train_dataset=processed_dataset,
+    tokenizer=processor.feature_extractor,
+)
 
-# training_args = Seq2SeqTrainingArguments(
-#     output_dir="./models/whisper-large-v3-finetuned",
-#     per_device_train_batch_size=1,
-#     gradient_accumulation_steps=2,
-#     learning_rate=1e-5,
-#     num_train_epochs=1,
-#     predict_with_generate=True,
-#     logging_dir="./logs",
-#     logging_steps=10,
-#     save_steps=500,
-#     eval_steps=500,
-#     warmup_steps=200,
-#     save_total_limit=3,
-#     fp16=True,
-# )
-#
-# trainer = Seq2SeqTrainer(
-#     model=model,
-#     args=training_args,
-#     train_dataset=processed_dataset,
-#     tokenizer=processor.feature_extractor,
-# )
-#
-# trainer.train()
+trainer.train()
