@@ -38,7 +38,7 @@ dataset = dataset.cast_column(
 )
 
 # remove those label longer than 2000
-processed_dataset = dataset.map(preprocess_function, remove_columns=["audio_file", "transcription", "audio"])
+processed_dataset = dataset.map(preprocess_function, remove_columns=["transcription", "audio"])
 
 processed_dataset.set_format(type="torch", columns=["input_features", "labels"])
 
