@@ -49,7 +49,7 @@ for i in [1e-7, 5e-5, 1e-6]:
         per_device_train_batch_size=1,
         gradient_accumulation_steps=2,
         learning_rate=i,
-        num_train_epochs=1,
+        num_train_epochs=2,
         predict_with_generate=True,
         logging_dir="./logs",
         logging_steps=10,
